@@ -3,12 +3,12 @@ import {BrowserRouter as Router, Routes, Route} from 'react-router-dom'
 import './App.css'
 
 import LandingPage from './pages/LandingPage'
+import RecordPage from './pages/RecordPage'
+import DashboardPage from './pages/DashboardPage'
 import LoginPage from './pages/LoginPage'
 import SignupPage from './pages/SignupPage'
 
-import Instructions from './components/Instructions'
 import HeaderLayout from './components/HeaderLayout'
-import Header from './components/Header'
 
 import WIIBalanceBoard from '../utils/wiibalanceboard'
 
@@ -16,7 +16,7 @@ export default function App() {
 
   const [wiibalanceboard, setWiibalanceboard] = useState(undefined)
 
-  async function handleRequest(){
+  async function handleFindBoard(){
     let device
     try {
       const devices = await navigator.hid.requestDevice({
@@ -40,11 +40,6 @@ export default function App() {
     }
   }
 
-  function toggleLED() {
-    // LED buttons
-    wiibalanceboard.toggleLed(0)
-  }
-
 
 
   return (
@@ -53,6 +48,11 @@ export default function App() {
         <Routes>
           <Route element={<HeaderLayout />}>
             <Route path='/' element={<LandingPage />}/>
+            <Route path='/record' element={<RecordPage 
+              handleFindBoard={handleFindBoard}
+              wiibalanceboard={wiibalanceboard}
+            />}/>
+            <Route path='/dashboard' element={<DashboardPage />}/>
             <Route path='/login' element={<LoginPage />}/>
             <Route path='/signup' element={<SignupPage />}/>
           </Route>

@@ -37,7 +37,7 @@ export default function Instructions(props){
                 <button
                 id="request-hid-device"
                 className="my-2 py-2 px-4 capitalize bg-blue-600 dark:bg-gray-800 text-white rounded hover:bg-blue-500 dark:hover:bg-gray-700 focus:outline-none focus:bg-blue-500 dark:focus:bg-gray-700 flex"
-                onClick={props.handleRequest}
+                onClick={props.handleFindBoard}
                 >
                 Connect Wii Balance Board
                 </button>
