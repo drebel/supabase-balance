@@ -1,13 +1,64 @@
+import React from "react"
 import Instructions from "../components/Instructions"
 import LivePlotter from "../components/LivePlotter"
+import { supabase } from "../../utils/supabase"
 
 export default function RecordPage(props){
 
     const connectedWBB = props.wiibalanceboard
 
+    React.useEffect(() => {
+        if(connectedWBB){
+            connectedWBB.WeightListener = handleWeightData
+        }
+
+        return () => {
+            if(connectedWBB){
+                connectedWBB.WeightListener = null
+            }
+        }
+    }, [connectedWBB])
+
+    async function handleWeightData(weights){
+        console.log(weights)
+
+        const payload= {
+            timestamp: new Date().toISOString(),
+            bottom_left_weight: weights.BOTTOM_LEFT,
+            bottom_right_weight: weights.BOTTOM_RIGHT,
+            top_left_weight: weights.TOP_LEFT,
+            top_right_weight: weights.TOP_RIGHT,
+        }
+        
+        addDataToTimeSeriesDB(payload)
+
+    }
+
+    async function addDataToTimeSeriesDB(newData){
+        try{
+            const { data , error } = await supabase
+                .from('balance_board_data')
+                .insert(newData)
+
+            if(error){
+                throw error
+            }
+
+            console.log('Data inserted successfully', data)
+
+        }catch(error){
+            console.error('Error inserting data:', error)
+            throw error
+        }
+    }
+
+
+
     function toggleLED() {
         // LED buttons
-        props.wiibalanceboard.toggleLed(0)
+        if(connectedWBB){
+            connectedWBB.toggleLed(0)
+        }
     }
 
     function logClick(){
@@ -17,10 +68,13 @@ export default function RecordPage(props){
     return (
         <>
             <h1>Record Page</h1>
-            <button onClick={props.handleFindBoard}>click</button>
+            <button onClick={props.logClick}>click</button>
             {
                 connectedWBB ?
-                <LivePlotter /> :
+                <LivePlotter 
+                    toggleLED={toggleLED}
+                    connectedWBB={connectedWBB}
+                /> :
                 <Instructions handleFindBoard={props.handleFindBoard}/>
             }
         </>

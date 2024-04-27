@@ -14,29 +14,21 @@ import WIIBalanceBoard from '../utils/wiibalanceboard'
 
 export default function App() {
 
-  const [wiibalanceboard, setWiibalanceboard] = useState(undefined)
+  const [wiibalanceboard, setWiibalanceboard] = useState(null)
 
   async function handleFindBoard(){
-    let device
     try {
       const devices = await navigator.hid.requestDevice({
         filters: [{ vendorId: 0x057e }]
       });
 
-      device = devices[0];
+      const device = devices[0];
       const newWiibalanceboard = new WIIBalanceBoard(device)
       setWiibalanceboard(newWiibalanceboard)
+
+      console.log(`HID: ${device.productName}`)
     } catch (error) {
       console.log("An error occurred.", error)
-    }
-
-    if (!device) {
-      console.log("No device was selected.")
-    } else {
-      console.log(`HID: ${device.productName}`)
-
-      // enableControls()
-      // showLiveData()
     }
   }
 

@@ -73,6 +73,7 @@ export default class WIIBalanceBoard extends WIIMote {
         data.getUint16(4 + 2 * j, true)
       )
     }
+    console.log(this.calibration)
   }
 
   WeightDecoder(data) {
