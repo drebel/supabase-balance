@@ -20,17 +20,17 @@ export default function RecordPage(props){
     }, [connectedWBB])
 
     async function handleWeightData(weights){
-        console.log(weights)
-
+        
         const payload= {
-            timestamp: new Date().toISOString(),
+            time: new Date().toISOString(),
             bottom_left_weight: weights.BOTTOM_LEFT,
             bottom_right_weight: weights.BOTTOM_RIGHT,
             top_left_weight: weights.TOP_LEFT,
             top_right_weight: weights.TOP_RIGHT,
         }
+        // console.log(payload)
         
-        addDataToTimeSeriesDB(payload)
+        // addDataToTimeSeriesDB(payload)
 
     }
 
