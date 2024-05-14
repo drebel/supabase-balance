@@ -102,9 +102,10 @@ export default class WIIBalanceBoard extends WIIMote {
     })
   }
 
-  WeightPlotter(data) {
+  WeightPlotter(data, timeStamp) {
     // console.log(data)
     let weights = this.WeightDecoder(data)
+    // console.log(timeStamp)
 
     for (let position in WiiBalanceBoardPositions) {
       const index = WiiBalanceBoardPositions[position]
@@ -112,7 +113,7 @@ export default class WIIBalanceBoard extends WIIMote {
     }
         
     if (this.WeightListener) {
-      this.WeightListener(this.weights)
+      this.WeightListener(this.weights, timeStamp)
     }
   }
 
@@ -279,7 +280,7 @@ export default class WIIBalanceBoard extends WIIMote {
 
     var { data } = event
     var { timeStamp } = event
-    console.log(data, timeStamp)
+    // console.log(data, timeStamp)
     // console.log(event)
 
 
@@ -293,27 +294,7 @@ export default class WIIBalanceBoard extends WIIMote {
         this.WeightCalibrationDecoder(data)
         break;
       case DataReportMode.EXTENSION_8BYTES:
-        //have if statement to figure out what to do with data depending on using input
-        if(this.isRecording){
-          this.eventData.push([timeStamp, data])
-        }else if(this.isTare){
-          this.TareDecoder(data)
-        } else {
-          this.WeightPlotter(data)
-        }
-
-        // have an is recording boolean
-        // if true records timestamps and data to array to be analyzed later
-
-        // if tare is true
-        // collect data for 5 sec then turn back to false
-        // take the greatest value or maybe the average value?
-        // then change the calibration matrix [0] to the value for each sensor
-
-        // if low q live feed is clicked? 
-        // use the original weight decoder to show data on the canvas
-
-        // NOTE: need to make sure buttons cant be clicked while others are true, so need to be toggling them together or setting them explicitly. 
+        this.WeightPlotter(data, timeStamp)
         break
       default:
         console.log(`event of unused report id ${event.reportId}`)
