@@ -1,6 +1,7 @@
 import { Link, NavLink } from 'react-router-dom'
+import Logout from './Logout'
 
-export default function Header(){
+export default function Header(props){
 
     return (
         <header>
@@ -11,13 +12,21 @@ export default function Header(){
                     </div>
 
                     <div className='hidden md:flex space-x-4'>
-                        <Link to='/record'>Record</Link>
-                        <Link to='/dashboard'>Dashboard</Link>
+                        {props.session && (
+                            <>
+                                <Link to='/record'>Record</Link>
+                                <Link to='/dashboard'>Dashboard</Link>
+                            </>
+                        )}
+
                     </div>
 
                     <div className='hidden md:flex space-x-4'>
-                        <Link to='/login'>Login</Link>
-                        <Link to='/signup'>Signup</Link>
+                        {props.session && (
+                            <>
+                                <Logout />
+                            </>
+                        )}
                     </div>
                 </div>
             </nav>

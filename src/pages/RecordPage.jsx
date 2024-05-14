@@ -1,7 +1,7 @@
 import React from "react"
 import Instructions from "../components/Instructions"
 import LivePlotter from "../components/LivePlotter"
-import { supabase } from "../../utils/supabase"
+import supabase from "../../utils/supabase"
 
 export default function RecordPage(props){
 

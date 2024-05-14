@@ -1,5 +1,7 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import {BrowserRouter as Router, Routes, Route} from 'react-router-dom'
+import supabase from '../utils/supabase'
+
 import './App.css'
 
 import LandingPage from './pages/LandingPage'
@@ -12,9 +14,31 @@ import HeaderLayout from './components/HeaderLayout'
 
 import WIIBalanceBoard from '../utils/wiibalanceboard'
 
+
 export default function App() {
 
+  const [session, setSession] = useState(null)
   const [wiibalanceboard, setWiibalanceboard] = useState(null)
+
+  useEffect(() => {
+    supabase.auth.getSession().then(({ data: { session }}) => {
+      setSession(session)
+    })
+
+    const {
+      data: { subscription }, 
+    } = supabase.auth.onAuthStateChange((_event, session) => {
+      setSession(session)
+    })
+
+    return () => subscription.unsubscribe()
+  }, [])
+
+
+
+
+
+
 
   async function handleFindBoard(){
     try {
@@ -38,8 +62,12 @@ export default function App() {
     <>
       <Router>
         <Routes>
-          <Route element={<HeaderLayout />}>
-            <Route path='/' element={<LandingPage />}/>
+          <Route element={<HeaderLayout 
+            session={session}
+          />}>
+            <Route path='/' element={<LandingPage 
+              session={session}
+            />}/>
             <Route path='/record' element={<RecordPage 
               handleFindBoard={handleFindBoard}
               wiibalanceboard={wiibalanceboard}
