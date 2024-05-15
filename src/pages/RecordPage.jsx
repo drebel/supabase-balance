@@ -22,18 +22,18 @@ export default function RecordPage(props){
     async function handleWeightData(weights, timeStamp){
         // weights comes from weightPlotter if weightListener is truthy
         const payload= {
-            userId: props.session.user.id,
-            boardId: connectedWBB.boardId,
-            boardTimeStamp: timeStamp,
-            time: new Date().toISOString(),
+            user_id: props.session.user.id,
+            board_id: connectedWBB.boardId,
+            board_timestamp: timeStamp,
+            event_timestamp: new Date().toISOString(),
             bottom_left_weight: weights.BOTTOM_LEFT,
             bottom_right_weight: weights.BOTTOM_RIGHT,
             top_left_weight: weights.TOP_LEFT,
             top_right_weight: weights.TOP_RIGHT,
         }
-        console.log(payload)
+        // console.log(payload)
         
-        // addDataToTimeSeriesDB(payload)
+        addDataToTimeSeriesDB(payload)
 
     }
 
