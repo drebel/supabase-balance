@@ -22,7 +22,8 @@ export default function RecordPage(props){
     async function handleWeightData(weights, timeStamp){
         // weights comes from weightPlotter if weightListener is truthy
         const payload= {
-            boardId: connectedWBB.calibration,
+            userId: props.session.user.id,
+            boardId: connectedWBB.boardId,
             boardTimeStamp: timeStamp,
             time: new Date().toISOString(),
             bottom_left_weight: weights.BOTTOM_LEFT,
@@ -64,7 +65,7 @@ export default function RecordPage(props){
     }
 
     function logClick(){
-        console.log('click')
+        console.log(props.session)
     }
 
     return (

@@ -8,6 +8,7 @@ export default function LandingPage(props){
     return(
         <section>
             <h1>Demo for high frequency data collection using WBB</h1>
+            <button onClick={props.logClick}>Click</button>
             {!props.session && <Auth supabaseClient={supabase} />}
         </section>
     )

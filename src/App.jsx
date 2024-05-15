@@ -35,7 +35,9 @@ export default function App() {
   }, [])
 
 
-
+  function logClick(){
+    console.log(session.user.id)
+  }
 
 
 
@@ -67,8 +69,10 @@ export default function App() {
           />}>
             <Route path='/' element={<LandingPage 
               session={session}
+              logClick={logClick}
             />}/>
             <Route path='/record' element={<RecordPage 
+              session={session}
               handleFindBoard={handleFindBoard}
               wiibalanceboard={wiibalanceboard}
             />}/>

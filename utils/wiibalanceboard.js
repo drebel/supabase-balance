@@ -27,11 +27,12 @@ export default class WIIBalanceBoard extends WIIMote {
       // [TOP_RIGHT 17kg, BOTTOM_RIGHT 17kg, TOP_LEFT 17kg, BOTTOM_LEFT 17kg]
       // [TOP_RIGHT 34kg, BOTTOM_RIGHT 34kg, TOP_LEFT 34kg, BOTTOM_LEFT 34kg]
       // ]
-      this.calibration = [
-        [10000.0, 10000.0, 10000.0, 10000.0],
-        [10000.0, 10000.0, 10000.0, 10000.0],
-        [10000.0, 10000.0, 10000.0, 10000.0]
-      ]
+    this.calibration = [
+      [10000.0, 10000.0, 10000.0, 10000.0],
+      [10000.0, 10000.0, 10000.0, 10000.0],
+      [10000.0, 10000.0, 10000.0, 10000.0]
+    ]
+    this.boardId = null
     this.eventData = []
     this.isRecording = false
     this.isTare = false
@@ -115,6 +116,11 @@ export default class WIIBalanceBoard extends WIIMote {
     if (this.WeightListener) {
       this.WeightListener(this.weights, timeStamp)
     }
+  }
+
+  CalibrationToBoardId(){
+    const flatString = this.calibration.flat().join('-')
+    this.boardId = flatString
   }
 
   TareDecoder(data) {
@@ -292,6 +298,7 @@ export default class WIIBalanceBoard extends WIIMote {
         // calibration data
         console.log("calibration data")
         this.WeightCalibrationDecoder(data)
+        this.CalibrationToBoardId()
         break;
       case DataReportMode.EXTENSION_8BYTES:
         this.WeightPlotter(data, timeStamp)
