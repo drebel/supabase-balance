@@ -1,7 +1,8 @@
 import React from "react"
 import Instructions from "../components/Instructions"
-import LivePlotter from "../components/LivePlotter"
 import supabase from "../../utils/supabase"
+
+import WeightOverTimeChart from "../components/weightOverTimeChart"
 
 export default function RecordPage(props){
 
@@ -55,24 +56,6 @@ export default function RecordPage(props){
         }
     }
 
-    async function fetchDataForLast100(){
-        try {
-            const { data , error } = await supabase
-                .from('balance_board_data')
-                .select('*')
-                .order('event_timestamp', { ascending: false})
-                .limit(100)
-
-            if(error){
-                throw error
-            }
-
-            console.log("Data for last 100 rows", data)
-        } catch (error) {
-            console.error('Error fetching data', error)
-        }
-    }
-
 
 
     function toggleLED() {
@@ -93,11 +76,9 @@ export default function RecordPage(props){
             {
                 connectedWBB ?
                 <>
-                    <button onClick={fetchDataForLast100}>Fetch Last 100</button>
-                    <LivePlotter 
-                        toggleLED={toggleLED}
-                        connectedWBB={connectedWBB}
-                    /> 
+
+                    <button onClick={toggleLED}>Toggle LED</button>
+                    <WeightOverTimeChart session={props.session}/>
                 </>
                     :
                 <Instructions handleFindBoard={props.handleFindBoard}/>
