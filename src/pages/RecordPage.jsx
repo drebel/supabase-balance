@@ -55,6 +55,24 @@ export default function RecordPage(props){
         }
     }
 
+    async function fetchDataForLast100(){
+        try {
+            const { data , error } = await supabase
+                .from('balance_board_data')
+                .select('*')
+                .order('event_timestamp', { ascending: false})
+                .limit(100)
+
+            if(error){
+                throw error
+            }
+
+            console.log("Data for last 100 rows", data)
+        } catch (error) {
+            console.error('Error fetching data', error)
+        }
+    }
+
 
 
     function toggleLED() {
@@ -74,10 +92,14 @@ export default function RecordPage(props){
             <button onClick={props.logClick}>click</button>
             {
                 connectedWBB ?
-                <LivePlotter 
-                    toggleLED={toggleLED}
-                    connectedWBB={connectedWBB}
-                /> :
+                <>
+                    <button onClick={fetchDataForLast100}>Fetch Last 100</button>
+                    <LivePlotter 
+                        toggleLED={toggleLED}
+                        connectedWBB={connectedWBB}
+                    /> 
+                </>
+                    :
                 <Instructions handleFindBoard={props.handleFindBoard}/>
             }
         </>
