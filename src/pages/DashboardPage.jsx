@@ -1,8 +1,10 @@
+import WeightOverTimeChart from '../components/WeightOverTimeChart'
 
-
-export default function DashboardPage(){
+export default function DashboardPage(props){
 
     return (
-        <h1>Dashboard Page</h1>
+        <section>
+            <WeightOverTimeChart session={props.session}/>
+        </section>
     )
 }

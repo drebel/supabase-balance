@@ -76,7 +76,9 @@ export default function App() {
               handleFindBoard={handleFindBoard}
               wiibalanceboard={wiibalanceboard}
             />}/>
-            <Route path='/dashboard' element={<DashboardPage />}/>
+            <Route path='/dashboard' element={<DashboardPage 
+              session={session}
+            />}/>
             <Route path='/login' element={<LoginPage />}/>
             <Route path='/signup' element={<SignupPage />}/>
           </Route>
