@@ -5,15 +5,27 @@ import { Chart as ChartJS,} from 'chart.js/auto'
 import supabase from '../../utils/supabase'
 
 export default function WeightOverTimeChart(props){
+    // const [userId, setUserId] = useState(null)
     const [weightData, setWeightData] = useState([])
+    const [selectedIntervalValue, setSelectedIntervalValue] = useState(60000)
     const [loading, setLoading] = useState(false)
     const [errorMessage, setErrorMessage] = useState(null)
 
+    useEffect(() => {
+        fetchData()
+    }, [selectedIntervalValue])
+
 
     async function fetchData(){ 
-        // const interval = 3600000
-        const interval = 86400000
+        if (!props.session || !props.session.user) {
+            console.error('Session or user is null');
+            return;
+        }
+        
+        const interval = selectedIntervalValue
+
         setLoading(true)
+        setErrorMessage(null)
         
         try {
             let allData = []
@@ -103,33 +115,62 @@ export default function WeightOverTimeChart(props){
         ]
     }
     
-    // const chartOptions = {
-    //     scales: {
-    //       x: {
-    //         type: "time",
-    //         time: {
-    //           unit: "second",
-    //         },
-    //       },
-    //       y: {
-    //         title: {
-    //           display: true,
-    //           text: "Weight (kg)",
-    //         },
-    //       },
-    //     },
-    //   }
+    function handleSelectChange(e){
+        setSelectedIntervalValue(e.target.value)
+    }
+
+    async function fetchMostRecent(){
+        if (!props.session || !props.session.user) {
+            console.error('Session or user is null');
+            return;
+        }
+        
+        setLoading(true)
+        setErrorMessage(null)
+        
+        try {
+            let { data , error } = await supabase
+                .from('balance_board_data')
+                .select('event_timestamp, bottom_left_weight, bottom_right_weight, top_left_weight, top_right_weight')
+                .eq('user_id', props.session.user.id)
+                .order('event_timestamp', { ascending: false})
+                .limit(1000)
+            if(error){
+                throw error
+            }
+
+            data.reverse()
+
+            if (data.length > 0) {
+                setWeightData(data)
+            }
+        } catch (error) {
+            console.error('Error fetching data', error)
+            setErrorMessage('Failed to fetch data')
+        }finally {
+        setLoading(false) 
+        }
+    }
 
     return(
         <>
-            <section>  
-                <button onClick={fetchData}>Fetch Last Interval</button>
+            <section> 
+                <label htmlFor="intervalSelect" >Get recordings in the: </label> 
+                <select id='intervalSelect' value={selectedIntervalValue} onChange={handleSelectChange}>
+                    <option value="60000">last minute</option>
+                    <option value="600000">last 10 minutes</option>
+                    <option value="1800000">last 30 minutes</option>
+                    <option value="3600000">last hour</option>
+                    <option value="86400000">last day (slow)</option>
+                </select>
+                <button onClick={fetchMostRecent}>Get last recorded ~20s</button>
             </section>
             <section>
                 {loading && <div>Loading...</div>}
                 {errorMessage && <div>{errorMessage}</div>}
                 { chartData.labels.length === 0 && <h2>No data available for the selected interval</h2>
                 }
+                { weightData.length != 0 && <h2>Loaded {weightData.length} data points</h2>}
                 <Line data={chartData} />
             </section>
         </>

@@ -8,7 +8,7 @@ export default function Header(props){
             <nav className="bg-gray-100 p-4 w-full">
                 <div className='max-w-7xl mx-auto flex justify-between items-center'>
                     <div>
-                        <Link to='/'>SwayPlate</Link>
+                        <Link to='/'>WBB Demo</Link>
                     </div>
 
                     <div className='hidden md:flex space-x-4'>
