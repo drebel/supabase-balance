@@ -5,7 +5,7 @@ export default function Instructions(props){
     return(
         <div
         id="instructions"
-        className="max-w-4xl mx-auto px-8 py-4 bg-white dark:bg-gray-800 rounded-lg shadow-md"
+        className="max-w-4xl mx-auto px-8 py-4 bg-slate-50 dark:bg-gray-800 rounded-lg shadow-md"
         >
             <h1 className="my-4 font-big text-bold  text-3xl">Step 1 - Enable bluetooth API on your browser</h1>
             <ol className="my-2">

@@ -166,23 +166,29 @@ export default function RecordPage(props){
 
     return (
         <>
-            {
-                connectedWBB ?
-                <>
-                    <section>
-                        <button className='btn' onClick={toggleLED}>Toggle LED</button>
-                        <button className='btn' onClick={toggleIsRecording}>{isRecording ? 'Stop Recording' : 'Start Recording' }</button>
 
-                    </section>
-                    <section>
+        {
+            connectedWBB ?
+            <>
+                <section className='bg-white pt-10'>
+                    <div className='container mx-auto px-4 text-center bg-white rounded flex justify-center space-x-4'>                            
+                        <button className='my-2 py-2 px-4 capitalize bg-blue-600 dark:bg-gray-800 text-white rounded hover:bg-blue-500 dark:hover:bg-gray-700 focus:outline-none focus:bg-blue-500 dark:focus:bg-gray-700' onClick={toggleLED}>Toggle LED</button>
+                        <button className='my-2 py-2 px-4 capitalize bg-blue-600 dark:bg-gray-800 text-white rounded hover:bg-blue-500 dark:hover:bg-gray-700 focus:outline-none focus:bg-blue-500 dark:focus:bg-gray-700' onClick={toggleIsRecording}>{isRecording ? 'Stop Recording' : 'Start Recording' }</button>
+                    </div>
+                </section>
+                <section className='bg-white py-10'>
+                    <div className='container mx-auto px-4 text-center'>                            
                         <Line data={realTimeWeightData}></Line>
-                        {/* <RealTimeWeightChart data={realTimeWeightData}/> */}
-                    </section>
-
-                </>
-                    :
-                <Instructions handleFindBoard={props.handleFindBoard}/>
-            }
+                    </div>
+                </section>
+            </>
+            :
+            <section className='bg-white py-20'>
+                <div className='container mx-auto px-4 text-center'>                            
+                    <Instructions handleFindBoard={props.handleFindBoard}/>
+                </div>
+            </section>
+        }  
         </>
     )
     
