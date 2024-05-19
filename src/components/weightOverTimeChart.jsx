@@ -154,25 +154,37 @@ export default function WeightOverTimeChart(props){
 
     return(
         <>
-            <section> 
-                <label htmlFor="intervalSelect" >Get recordings in the: </label> 
-                <select id='intervalSelect' value={selectedIntervalValue} onChange={handleSelectChange}>
-                    <option value="60000">last minute</option>
-                    <option value="600000">last 10 minutes</option>
-                    <option value="1800000">last 30 minutes</option>
-                    <option value="3600000">last hour</option>
-                    <option value="86400000">last day (slow)</option>
-                </select>
-                <button onClick={fetchMostRecent}>Get last recorded ~20s</button>
-            </section>
-            <section>
-                {loading && <div>Loading...</div>}
-                {errorMessage && <div>{errorMessage}</div>}
-                { chartData.labels.length === 0 && <h2>No data available for the selected interval</h2>
-                }
-                { weightData.length != 0 && <h2>Loaded {weightData.length} data points</h2>}
+            <div className='container mx-auto px-4 text-center bg-white rounded flex py-4'>
+                <div className='mx-auto flex flex-row items-center justify-center space-y-0 space-x-4'>
+                    <button className='my-2 py-2 px-4 capitalize bg-blue-600 dark:bg-gray-800 text-white rounded hover:bg-blue-500 dark:hover:bg-gray-700 focus:outline-none focus:bg-blue-500 dark:focus:bg-gray-700' onClick={fetchMostRecent}>Get last recorded ~20s</button>
+                    <div>or</div>
+                    <div>
+                        <label htmlFor="intervalSelect" >Get recordings in the last: </label> 
+                        <select id='intervalSelect' value={selectedIntervalValue} onChange={handleSelectChange}>
+                            <option value="60000">minute</option>
+                            <option value="600000">10 minutes</option>
+                            <option value="1800000">30 minutes</option>
+                            <option value="3600000">hour</option>
+                            <option value="86400000">day (slow)</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <div className='container mx-auto px-4 text-center bg-white rounded flex justify-center space-x-4'>
+                <div>               
+                    {loading && <span>Loading...</span>}
+                    {errorMessage && <span>{errorMessage}</span>}
+                </div>
+                <div>
+                    { !loading && chartData.labels.length === 0 && <span>No data available for the selected interval</span>
+                    }
+                    { weightData.length !== 0 && <span>Loaded {weightData.length} data points</span>}
+                </div>
+            </div>
+                
+            <div className='container mx-auto px-4 text-center bg-white rounded flex justify-center space-x-4'> 
                 <Line data={chartData} />
-            </section>
+            </div>
         </>
     )
 }
