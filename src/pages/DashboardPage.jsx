@@ -1,10 +1,10 @@
-import WeightOverTimeChart from '../components/WeightOverTimeChart'
+import HistoricWeightChart from '../components/HistoricWeightChart'
 
 export default function DashboardPage(props){
 
     return (
         <section className='bg-white pt-10'> 
-            <WeightOverTimeChart session={props.session}/>
+            <HistoricWeightChart session={props.session}/>
         </section>
     )
 }
