@@ -164,6 +164,36 @@ export default function RecordPage(props){
         }
     }
 
+    const options = {
+        responsive: true,
+        animation: {
+            duration: 0,
+        },
+        plugins: {
+            legend: {
+                display: true,
+            },
+            title: {
+                display: true,
+                text: 'Live Sensor Readings',
+            },
+        },
+        scales: {
+            x: {
+              title: {
+                display: true,
+                text: 'Timestamp (UTC)',
+              },
+            },
+            y: {
+              title: {
+                display: true,
+                text: 'Weight (kgs)',
+              },
+            },
+          },
+    }
+
     return (
         <>
 
@@ -178,7 +208,7 @@ export default function RecordPage(props){
                 </section>
                 <section className='bg-white py-10'>
                     <div className='container mx-auto px-4 text-center'>                            
-                        <Line data={realTimeWeightData}></Line>
+                        <Line data={realTimeWeightData} options={options}></Line>
                     </div>
                 </section>
             </>
