@@ -3,7 +3,7 @@ import Instructions from "../components/Instructions"
 import supabase from "../../utils/supabase"
 import { Line } from 'react-chartjs-2'
 
-import RealTimeWeightChart from '../components/RealTimeWeightChart'
+// import RealTimeWeightChart from '../components/RealTimeWeightChart'
 
 export default function RecordPage(props){
 
