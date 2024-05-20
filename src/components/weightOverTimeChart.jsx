@@ -1,7 +1,6 @@
 import { useEffect, useState } from 'react'
 import { Chart as ChartJS,} from 'chart.js/auto'
-  import { Line } from 'react-chartjs-2'
-// import fetchDataForLast100 from '../../utils/fetch100'
+import { Line } from 'react-chartjs-2'
 import supabase from '../../utils/supabase'
 
 export default function WeightOverTimeChart(props){
